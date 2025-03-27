@@ -11,7 +11,7 @@ npm i typescript @types/node tsx tsup -D
 npm i -D tsx
 ```
 
-Instalar Framework para criar API e servidores HTTP; Plugins para Token JWT e Cookies
+> Instalar Framework para criar API e servidores HTTP; Plugins para Token JWT e Cookies
 
 ```javascript
 npm i fastify
@@ -19,7 +19,7 @@ npm i @fastify/jwt
 npm i @fastify/cookie
 ```
 
-> Carregar Vaariáveis de Ambiente
+> Carregar Variáveis de Ambiente
 
 ```javascript
 npm i dotenv

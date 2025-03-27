@@ -1,0 +1,42 @@
+{
+  "name": "findafriend",
+  "version": "1.0.0",
+  "description": "Find a Friend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1felipeaac/findAFriend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1felipeaac/findAFriend/issues"
+  },
+  "homepage": "https://github.com/1felipeaac/findAFriend#readme",
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.13.14",
+    "@types/supertest": "^6.0.3",
+    "@vitest/ui": "^3.0.9",
+    "prisma": "^6.5.0",
+    "supertest": "^7.1.0",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.0.9"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/jwt": "^9.1.0",
+    "@prisma/client": "^6.5.0",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.2",
+    "zod": "^3.24.2"
+  }
+}

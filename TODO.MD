@@ -18,7 +18,7 @@
 
 # RNFs (Requisitos não-funcionais)
 
-- [ ] A senha do usuário deve ser criptografada;
-- [ ] Os dados da aplicação precisam estar persistodos em um banco PostgresSQL;
-- [ ] Todas as listas de dados precisam estar paginadas com 20 itens por página;
-- [ ] O usuário deve ser identificado por um JWT (JSON Web Token)
+* [ ] A senha do usuário deve ser criptografada;
+* [ ] Os dados da aplicação precisam estar persistodos em um banco PostgresSQL;
+* [ ] Todas as listas de dados precisam estar paginadas com 20 itens por página;
+* [ ] O usuário deve ser identificado por um JWT (JSON Web Token)
