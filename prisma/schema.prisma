@@ -99,6 +99,7 @@ model Endereco {
   org        Org     @relation(fields: [orgId], references: [id], onDelete: Cascade)
   orgId      String  @unique
 
+  @@unique([logradouro, numero])
   @@map("endereco")
 }
 

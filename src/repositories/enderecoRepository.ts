@@ -1,5 +1,10 @@
 import { Endereco, Prisma } from "@prisma/client";
 
+export interface SearchByLogradouroAndNumero{
+    logradouro: string,
+    numero: string
+}
+
 export interface EnderecoRepository{
-    create(data: Prisma.OrgCreateInput) : Promise<Endereco>
+    findEnderecoByLogradouroAndNumero({logradouro, numero}:SearchByLogradouroAndNumero): Promise<Endereco | null>
 }

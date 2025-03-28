@@ -1,4 +1,4 @@
-import { Prisma, Org } from "@prisma/client";
+import { Org, MyOrgCreateInput } from "@prisma/client";
 import { OrgsRepository } from "../orgsRepository";
 import { prisma } from "@/lib/prisma";
 import { randomUUID } from "node:crypto";
@@ -6,11 +6,10 @@ import { randomUUID } from "node:crypto";
 export class InMemoryOrgsRepository implements OrgsRepository{
 
     public items:Org[] = []
-    async create(data: Prisma.OrgCreateInput) {
+    async create(data: MyOrgCreateInput) {
         const org = {
             id: randomUUID(),
             email: data.email,
-            cep: data.cep,
             endereco: data.endereco,
             whatsapp: data.whatsapp,
             password_hash: data.password_hash,
@@ -39,5 +38,6 @@ export class InMemoryOrgsRepository implements OrgsRepository{
 
         return org
     }
+
 
 }

@@ -3,14 +3,18 @@ import { describe, beforeEach, it, expect } from 'vitest'
 import { RegisterService } from '../register'
 import { compare } from 'bcryptjs'
 import { OrgAlreadyExistsError } from '../errors/org-already-existis-error'
+import { InMemoryEnderecosRepository } from '@/repositories/in-memory/in-memory-enderecos.repository'
+import { EnderecoAlreadyExistsError } from '../errors/endereco-already-existis-error'
 
 let orgRepository: InMemoryOrgsRepository
+let enderRepository: InMemoryEnderecosRepository
 let sut: RegisterService
 
 describe('RegisterService', () => {
     beforeEach(() =>{
         orgRepository = new InMemoryOrgsRepository()
-        sut = new RegisterService(orgRepository)
+        enderRepository = new InMemoryEnderecosRepository()
+        sut = new RegisterService(orgRepository, enderRepository)
         
     })
     it('Deve ser Possível Registar uma Organização', async () =>{
@@ -53,7 +57,7 @@ describe('RegisterService', () => {
         expect(isPasswordCorrectlyHashed).toBe(true)
     })
 
-    it('Não deve ser possível registar duas empresas com o mesmo email', async ()=>{
+    it('Não deve ser possível registar duas Organizações com o mesmo email', async ()=>{
        
         await sut.execute({
             nome:"org ltda.",
@@ -88,7 +92,7 @@ describe('RegisterService', () => {
         ).rejects.toBeInstanceOf(OrgAlreadyExistsError)
     })
 
-    it('Não deve ser possível registar duas empresas com o mesmo whatsapp', async ()=>{
+    it('Não deve ser possível registar duas Organizações com o mesmo whatsapp', async ()=>{
        
         await sut.execute({
             nome:"org ltda.",
@@ -122,4 +126,5 @@ describe('RegisterService', () => {
             })
         ).rejects.toBeInstanceOf(OrgAlreadyExistsError)
     })
+
 })

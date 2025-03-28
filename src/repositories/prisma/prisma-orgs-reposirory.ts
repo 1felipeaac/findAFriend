@@ -1,22 +1,34 @@
-import { Prisma, $Enums, Org } from "@prisma/client";
+import { MyOrgCreateInput, Org } from "@prisma/client";
 import { OrgsRepository } from "../orgsRepository";
 import { prisma } from "@/lib/prisma";
+import { EnderecoCanNotBeNullError } from "@/services/errors/endereco-can-not-be-null-error";
 
 
 export class PrismaOrgsRepository implements OrgsRepository{
-    async create(data: Prisma.OrgCreateInput) {
+    async findById(id: string): Promise<Org | null> {
+        const org = await prisma.org.findUnique({
+            where: { id }
+        })
+
+        return org
+    }
+    async create(data: MyOrgCreateInput) {
 
         const {nome, email, whatsapp, password_hash, endereco} = data
 
-        const {cep, logradouro, numero, bairro, cidade, estado} = endereco
-       
+        if(!endereco){
+            throw new EnderecoCanNotBeNullError()
+        }
+
+        const { cep, logradouro, numero, bairro, cidade, estado } = endereco;
+    
         const org = await prisma.org.create({
             data: {
                 nome,
                 email,
                 whatsapp,
                 password_hash,
-                endereco:{
+                endereco: {
                     create:{
                         bairro,
                         cep,
@@ -26,12 +38,9 @@ export class PrismaOrgsRepository implements OrgsRepository{
                         estado
                     }
                 }
-            },
-            include:{
-                endereco: true
             }
         })
-
+        
         return org
     }
     async findByEmail(email: string){

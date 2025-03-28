@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { EnderecoAlreadyExistsError } from "@/services/errors/endereco-already-existis-error";
 import { OrgAlreadyExistsError } from "@/services/errors/org-already-existis-error";
 import { makeRegisterService } from "@/services/factories/make-register-service";
 import { hash } from "bcryptjs";
@@ -50,10 +51,15 @@ export async function register (request: FastifyRequest, reply: FastifyReply){
             }
         )
     } catch (error) {
+        console.log(error);
         if(error instanceof OrgAlreadyExistsError){
             return reply.status(409).send({message: error.message})
         }
+        if(error instanceof EnderecoAlreadyExistsError){
+            return reply.status(409).send({message: error.message})
+        }
+
     }
 
-    return reply.status(201).send(org)
+    return reply.status(201).send()
 }
