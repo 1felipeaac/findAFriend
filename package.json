@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Find a Friend",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "test": "vitest run --project unit",
     "dev": "tsx watch src/server.ts"
   },
   "repository": {

@@ -47,16 +47,15 @@ enum Role {
 }
 
 model Org {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   nome          String
-  email         String   @unique
-  cep           String
-  endereco      String
-  whatsapp      String   @unique
+  email         String    @unique
+  whatsapp      String    @unique
   password_hash String
-  created_at    DateTime @default(now())
+  created_at    DateTime  @default(now())
   pets          Pet[]
-  role          Role     @default(ORG)
+  endereco      Endereco?
+  role          Role      @default(ORG)
 
   @@map("orgs")
 }
@@ -87,4 +86,48 @@ model Requisito {
   pet_id String
 
   @@map("requisitos")
+}
+
+model Endereco {
+  id         String  @id @default(uuid())
+  cep        String
+  logradouro String
+  numero     String
+  bairro     String
+  cidade     String
+  estado     Estados
+  org        Org     @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId      String  @unique
+
+  @@map("endereco")
+}
+
+enum Estados {
+  AC
+  AL
+  AP
+  AM
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MT
+  MS
+  MG
+  PA
+  PB
+  PR
+  PE
+  PI
+  RJ
+  RN
+  RS
+  RO
+  RR
+  SC
+  SP
+  SE
+  TO
 }

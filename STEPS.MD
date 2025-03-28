@@ -15,3 +15,11 @@
    3. Criar tabelas
 
       * `npx prisma migrate dev`
+   4. Services (Inicio)
+
+      * Org
+        * Cadastrar
+   5. Controllers
+   6. Testes (Inicio)
+   7. sdf
+   8.
