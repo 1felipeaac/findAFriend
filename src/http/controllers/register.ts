@@ -1,10 +1,15 @@
-import { prisma } from "@/lib/prisma";
 import { EnderecoAlreadyExistsError } from "@/services/errors/endereco-already-existis-error";
 import { OrgAlreadyExistsError } from "@/services/errors/org-already-existis-error";
 import { makeRegisterService } from "@/services/factories/make-register-service";
-import { hash } from "bcryptjs";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { z } from "zod";
+import { string, z } from "zod";
+
+
+const estadosBrasil = [
+    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
+    "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN",
+    "RS", "RO", "RR", "SC", "SP", "SE", "TO"
+  ] as const;
 
 export async function register (request: FastifyRequest, reply: FastifyReply){
     const enderecoBodySchema = z.object({
@@ -13,11 +18,7 @@ export async function register (request: FastifyRequest, reply: FastifyReply){
         numero: z.string(),
         bairro: z.string(),
         cidade: z.string(),
-        estado: z.enum([ 
-            'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
-            'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 
-            'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
-        ])
+        estado: z.enum(estadosBrasil)
     })
     const registerBodySchema = z.object({
         nome: z.string(),
@@ -27,21 +28,18 @@ export async function register (request: FastifyRequest, reply: FastifyReply){
         password: z.string().min(6),
     })
 
-
-    const {
-        nome, 
-        email, 
-        endereco,
-        whatsapp,
-        password
-    } = registerBodySchema.parse(request.body);
-
-    let org
-       
+    
     try {
+        const {
+            nome, 
+            email, 
+            endereco,
+            whatsapp,
+            password
+        } = registerBodySchema.parse(request.body);
         const registerOrg = makeRegisterService()
 
-        org = await registerOrg.execute(
+        await registerOrg.execute(
             {
                 nome, 
                 email,
@@ -50,8 +48,17 @@ export async function register (request: FastifyRequest, reply: FastifyReply){
                 password
             }
         )
+
+    return reply.status(201).send()
+
     } catch (error) {
-        console.log(error);
+        if(error instanceof z.ZodError){
+
+            return reply.status(400).send({
+                message: "Erro de Validação",
+                errors: error.errors.map((error) => error.message)
+            })
+        }
         if(error instanceof OrgAlreadyExistsError){
             return reply.status(409).send({message: error.message})
         }
@@ -61,5 +68,5 @@ export async function register (request: FastifyRequest, reply: FastifyReply){
 
     }
 
-    return reply.status(201).send()
+    return reply.status(500).send({message: "Erro interno do servidor!"})
 }

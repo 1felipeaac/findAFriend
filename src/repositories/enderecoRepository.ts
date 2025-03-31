@@ -1,4 +1,4 @@
-import { Endereco, Prisma } from "@prisma/client";
+import { Endereco } from "@prisma/client";
 
 export interface SearchByLogradouroAndNumero{
     logradouro: string,
