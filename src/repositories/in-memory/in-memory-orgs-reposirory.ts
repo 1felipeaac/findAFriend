@@ -1,4 +1,4 @@
-import { Org, MyOrgCreateInput } from "@prisma/client";
+import { Org, MyOrgCreateInput, $Enums } from "@prisma/client";
 import { OrgsRepository } from "../orgsRepository";
 import { prisma } from "@/lib/prisma";
 import { randomUUID } from "node:crypto";
@@ -6,6 +6,7 @@ import { randomUUID } from "node:crypto";
 export class InMemoryOrgsRepository implements OrgsRepository{
 
     public items:Org[] = []
+    //@ts-ignore
     async create(data: MyOrgCreateInput) {
         const org = {
             id: randomUUID(),
@@ -16,6 +17,7 @@ export class InMemoryOrgsRepository implements OrgsRepository{
             created_at: new Date(),
         }
 
+        //@ts-ignore
         this.items.push(org);
 
         return org
@@ -31,6 +33,16 @@ export class InMemoryOrgsRepository implements OrgsRepository{
     }
     async findByWhatsapp(whatsapp: string){
         const org = this.items.find(item => item.whatsapp === whatsapp)
+
+        if(!org){
+            return null
+        }
+
+        return org
+    }
+
+    async findById(id: string){
+        const org = this.items.find(item => item.id === id)
 
         if(!org){
             return null

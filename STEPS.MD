@@ -18,8 +18,9 @@
    4. Services (Inicio)
 
       * Org
-        * Cadastrar
+        * Register (Cadastrar Org)
+          * Testes Unitarios
+      * Pet
    5. Controllers
-   6. Testes (Inicio)
-   7. sdf
-   8.
+
+      * Register (Cadastrar ORG)

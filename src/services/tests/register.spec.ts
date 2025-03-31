@@ -4,7 +4,6 @@ import { RegisterService } from '../register'
 import { compare } from 'bcryptjs'
 import { OrgAlreadyExistsError } from '../errors/org-already-existis-error'
 import { InMemoryEnderecosRepository } from '@/repositories/in-memory/in-memory-enderecos.repository'
-import { EnderecoAlreadyExistsError } from '../errors/endereco-already-existis-error'
 
 let orgRepository: InMemoryOrgsRepository
 let enderRepository: InMemoryEnderecosRepository
@@ -14,6 +13,7 @@ describe('RegisterService', () => {
     beforeEach(() =>{
         orgRepository = new InMemoryOrgsRepository()
         enderRepository = new InMemoryEnderecosRepository()
+        //@ts-ignore
         sut = new RegisterService(orgRepository, enderRepository)
         
     })

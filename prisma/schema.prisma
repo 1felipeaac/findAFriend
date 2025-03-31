@@ -25,7 +25,7 @@ enum Porte {
   GRANDE
 }
 
-enum Energina {
+enum Energia {
   BAIXA
   ALTA
 }
@@ -66,26 +66,17 @@ model Pet {
   sobre         String
   idade         Idade
   porte         Porte
-  energia       Energina
+  energia       Energia
   independencia Independencia
   ambiente      Ambiente
   fotos         String
-  requisitos    Requisito[]
+  especie       Especie
+  requisitos    String[]
 
   org    Org    @relation(fields: [org_id], references: [id])
   org_id String
 
   @@map("pets")
-}
-
-model Requisito {
-  id        String @id @default(uuid())
-  requisito String
-
-  pet    Pet    @relation(fields: [pet_id], references: [id])
-  pet_id String
-
-  @@map("requisitos")
 }
 
 model Endereco {
@@ -131,4 +122,9 @@ enum Estados {
   SP
   SE
   TO
+}
+
+enum Especie {
+  CACHORRO
+  GATO
 }

@@ -15,13 +15,7 @@ export class PrismaOrgsRepository implements OrgsRepository{
     async create(data: MyOrgCreateInput) {
 
         const {nome, email, whatsapp, password_hash, endereco} = data
-
-        if(!endereco){
-            throw new EnderecoCanNotBeNullError()
-        }
-
-        const { cep, logradouro, numero, bairro, cidade, estado } = endereco;
-    
+        
         const org = await prisma.org.create({
             data: {
                 nome,
@@ -29,14 +23,14 @@ export class PrismaOrgsRepository implements OrgsRepository{
                 whatsapp,
                 password_hash,
                 endereco: {
-                    create:{
-                        bairro,
-                        cep,
-                        logradouro,
-                        numero,
-                        cidade,
-                        estado
-                    }
+                    create:endereco ? {
+                        bairro: endereco.bairro,
+                        cep: endereco.cep,
+                        logradouro: endereco.logradouro,
+                        numero: endereco.numero,
+                        cidade: endereco.cidade,
+                        estado: endereco.estado,
+                    } : undefined
                 }
             }
         })
@@ -57,5 +51,6 @@ export class PrismaOrgsRepository implements OrgsRepository{
 
         return org
     }
+
 
 }
