@@ -6,6 +6,7 @@ export class InMemoryPetsRepository implements PetsRepository{
     public items:Pet[] = []
     //@ts-ignore
     async create(data: Prisma.PetUncheckedCreateInput){
+        const requisitos = Array.isArray(data.requisitos) ? data.requisitos : data.requisitos?.set || [];
         const pet = {
             id: randomUUID(),
             nome: data.nome,
@@ -17,7 +18,7 @@ export class InMemoryPetsRepository implements PetsRepository{
             ambiente: data.ambiente, 
             fotos: data.fotos, 
             especie: data.especie, 
-            requisitos: data.requisitos,
+            requisitos,
             org_id: data.org_id,
         }
 

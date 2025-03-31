@@ -10,6 +10,7 @@ declare module "@prisma/client"{
         estado: Estados;
     }
 
+
     export interface MyOrgCreateInput extends Omit<Prisma.OrgCreateInput, "endereco">{
         endereco?: OrgEnderecoCreateInput
     }

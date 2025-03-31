@@ -22,7 +22,10 @@ interface CreatePetServiceReponse {
 }
 
 export class CreatePetService {
-    constructor(private petRepository: PetsRepository, private orgRepository: OrgsRepository){}
+    constructor(
+        private petRepository: PetsRepository, 
+        private orgRepository: OrgsRepository
+    ){}
 
     async execute({
         nome,
@@ -38,12 +41,10 @@ export class CreatePetService {
         org_id
     }:CreatePetServiceResponse):Promise<CreatePetServiceReponse>{
 
-        console.log("ID da organização recebida no execute:", org_id);
-    // console.log("Lista de organizações no repositório:", this.orgRepository.items);
+        console.log("Chamando findById com org_id:", org_id); // ✅ Teste aqui
 
         const org = await this.orgRepository.findById(org_id)
 
-        console.log("ORG: "+org)
 
         if(!org){
             throw new Error("Organização não encontrada")

@@ -33,17 +33,20 @@ export async function createPet(request: FastifyRequest, reply: FastifyReply){
             org_id} = petBodySchema.parse(request.body)
             
         const petService = makeCreatePetRegisterService()
-        const pet = petService.execute({nome,
-            sobre,
-            idade,
-            porte, 
-            energia,
-            independencia,
-            ambiente, 
-            fotos, 
-            especie, 
-            requisitos,
-            org_id})
+        const pet = petService.execute(
+            {
+                nome,
+                sobre,
+                idade,
+                porte, 
+                energia,
+                independencia,
+                ambiente, 
+                fotos, 
+                especie, 
+                requisitos,
+                org_id
+            })
         return reply.status(201).send({pet})
     } catch (error) {
         if(error instanceof z.ZodError){
