@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "vitest run --project unit",
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "prisma:studio": "npx prisma studio"
   },
   "repository": {
     "type": "git",

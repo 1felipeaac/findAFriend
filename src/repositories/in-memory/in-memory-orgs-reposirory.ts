@@ -6,6 +6,7 @@ import { randomUUID } from "node:crypto";
 export class InMemoryOrgsRepository implements OrgsRepository{
 
     public items:Org[] = []
+    //@ts-ignore
     async create(data: MyOrgCreateInput) {
         const org = {
             id: randomUUID(),
@@ -16,6 +17,7 @@ export class InMemoryOrgsRepository implements OrgsRepository{
             created_at: new Date(),
         }
 
+        //@ts-ignore
         this.items.push(org);
 
         return org
