@@ -1,8 +1,9 @@
 import { OrgsRepository } from "@/repositories/orgsRepository";
 import { PetsRepository } from "@/repositories/petsRepository";
-import { Ambiente, Energia, Especie, Idade, Independencia, Pet, Porte } from "@prisma/client";
+import { $Enums, Ambiente, Energia, Especie, Idade, Independencia, Pet, Porte } from "@prisma/client";
+import { ValidacaoEnumError } from "./errors/validacao-enum-error";
 
-interface CreatePetServiceResponse {
+interface PetServiceRequest {
     nome: string,
     sobre:         string,
     idade:         Idade,
@@ -17,11 +18,15 @@ interface CreatePetServiceResponse {
   }
 
 
-interface CreatePetServiceReponse {
+interface PetServiceReponse {
     pet: Pet
 }
 
-export class CreatePetService {
+interface PetServiceListReponse {
+    pets: Pet[]
+}
+
+export class PetService {
     constructor(
         private petRepository: PetsRepository, 
         private orgRepository: OrgsRepository
@@ -39,12 +44,9 @@ export class CreatePetService {
         especie, 
         requisitos,
         org_id
-    }:CreatePetServiceResponse):Promise<CreatePetServiceReponse>{
-
-        console.log("Chamando findById com org_id:", org_id); // ✅ Teste aqui
+    }:PetServiceRequest):Promise<PetServiceReponse>{
 
         const org = await this.orgRepository.findById(org_id)
-
 
         if(!org){
             throw new Error("Organização não encontrada")
@@ -64,5 +66,26 @@ export class CreatePetService {
             org_id})
 
         return {pet}
+    }
+
+    async findAll(page: number):Promise<PetServiceListReponse>{
+
+        const pets = await this.petRepository.findAll(page)
+
+        return {pets}
+
+    }
+
+    async findAllByIdade(idade: string, page: number): Promise<PetServiceListReponse>{
+
+        console.log("findAllByIdade" +"|"+ idade)
+
+        if(!Object.values($Enums.Idade).includes(idade as $Enums.Idade)){
+            throw new ValidacaoEnumError(idade)
+        }
+
+        const pets = await this.petRepository.findAllByIdade(idade, page);
+
+        return {pets}
     }
 }

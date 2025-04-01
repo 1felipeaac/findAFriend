@@ -1,6 +1,8 @@
 import { Prisma, $Enums, Pet } from "@prisma/client";
-import { PetsRepository } from "../petsRepository";
+import { FindByIdade, PetsRepository } from "../petsRepository";
 import { randomUUID } from "node:crypto";
+
+
 
 export class InMemoryPetsRepository implements PetsRepository{
     public items:Pet[] = []
@@ -36,12 +38,17 @@ export class InMemoryPetsRepository implements PetsRepository{
 
         return pet
     }
-    async findAll(){
-        return this.items.map(p => p)
+    async findAll(page: number){
+        const pageSize = 20
+        return this.items
+                .slice((page - 1) * pageSize, page * pageSize)
     }
     async findAllByIdade(idade: string, page: number){
-        return this.items.filter((pet) => pet.idade.includes(idade))
-            .slice((page - 1) * 20, page *20)
+        const pageSize = 20
+        // console.log(this.items.filter((pet) => pet.idade === idade))
+        return this.items
+                .filter((pet) => pet.idade === idade)  // Filtrando pets pela idade
+                .slice((page - 1) * pageSize, page * pageSize);  // Paginação
     }
     async findAllByEnergia(energia: string, page: number){
         return this.items.filter((pet) => pet.energia.includes(energia))
