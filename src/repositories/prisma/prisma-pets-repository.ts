@@ -82,7 +82,6 @@ export class PrismaPetsRepository implements PetsRepository {
 
     return pets;
   }
-
   async findAllByCidade(cidade: string, page: number) {
 
     const pets = await prisma.pet.findMany({

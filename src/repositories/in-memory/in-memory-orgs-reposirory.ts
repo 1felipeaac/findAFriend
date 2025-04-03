@@ -1,11 +1,11 @@
-import { Org, MyOrgCreateInput } from "@prisma/client";
+import { Org, MyOrgCreateInput, $Enums } from "@prisma/client";
 import { OrgsRepository } from "../orgsRepository";
 import { randomUUID } from "node:crypto";
 
 export class InMemoryOrgsRepository implements OrgsRepository{
 
-    public items:Org[] = []
-    //@ts-ignore
+    public items:MyOrgCreateInput[] = []
+ 
     async create(data: MyOrgCreateInput) {
         const org = {
             id: randomUUID(),
@@ -15,11 +15,10 @@ export class InMemoryOrgsRepository implements OrgsRepository{
             whatsapp: data.whatsapp,
             password_hash: data.password_hash,
             created_at: new Date(),
-            role: 'ORG'
+            role: $Enums.Role.ORG
 
         }
 
-        //@ts-ignore
         this.items.push(org);
 
         return org
@@ -52,6 +51,25 @@ export class InMemoryOrgsRepository implements OrgsRepository{
         }
 
         return org
+    }
+
+    async findAllOrgsByCidade(cidade: string, page: number){
+
+        // console.log("findAllOrgsByCidade: "+cidade)
+
+        const orgs = this.items.filter(item =>{ 
+            if (!item.endereco){
+                throw new Error(`Cidade ${cidade} not found`)
+            }
+            // console.log("filter: "+ item.endereco.cidade)
+            
+            const mesmaCidade = item.endereco.cidade === cidade
+            // console.log(item.endereco.cidade === cidade)
+
+            return mesmaCidade
+        }).slice((page - 1) * 20, page * 20);
+
+        return orgs
     }
 
 

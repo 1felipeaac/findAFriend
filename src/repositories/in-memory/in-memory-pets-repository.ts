@@ -1,9 +1,10 @@
-import { Prisma, $Enums, Pet } from "@prisma/client";
+import { Prisma, $Enums, Pet, MyOrgCreateInput } from "@prisma/client";
 import { FindByIdade, PetsRepository } from "../petsRepository";
 import { randomUUID } from "node:crypto";
 
 export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = [];
+  public orgs: MyOrgCreateInput[] = []; 
   //@ts-ignore
   async create(data: Prisma.PetUncheckedCreateInput) {
     const requisitos = Array.isArray(data.requisitos)

@@ -1,5 +1,5 @@
 import { PrismaOrgsRepository } from "@/repositories/prisma/prisma-orgs-reposirory";
-import { RegisterService } from "../register";
+import { RegisterService } from "../org-service";
 import { PrismaEnderecoRepository } from "@/repositories/prisma/prisma-enderecos-repository";
 
 export function makeRegisterService(){

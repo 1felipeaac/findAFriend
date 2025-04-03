@@ -2,8 +2,9 @@ import { MyOrgCreateInput, Org } from "@prisma/client";
 
 
 export interface OrgsRepository {
-    create(data: MyOrgCreateInput) : Promise<Org>
-    findById(org_id: string) : Promise<Org | null>
-    findByEmail(email: string): Promise<Org | null>
-    findByWhatsapp(whatsapp: string): Promise<Org | null>
+    create(data: MyOrgCreateInput) : Promise<MyOrgCreateInput>
+    findById(org_id: string) : Promise<MyOrgCreateInput | null>
+    findByEmail(email: string): Promise<MyOrgCreateInput | null>
+    findByWhatsapp(whatsapp: string): Promise<MyOrgCreateInput | null>
+    findAllOrgsByCidade(cidade: string, page: number): Promise<MyOrgCreateInput[]>
 }

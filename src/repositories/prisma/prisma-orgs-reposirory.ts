@@ -5,7 +5,20 @@ import { EnderecoCanNotBeNullError } from "@/services/errors/endereco-can-not-be
 
 
 export class PrismaOrgsRepository implements OrgsRepository{
-    async findById(id: string): Promise<Org | null> {
+    async findAllOrgsByCidade(cidade: string, page: number){
+        const orgs = await prisma.org.findMany({
+            where: {
+                endereco: {
+                    cidade
+                }
+            },
+            take: 20,
+            skip: (page - 1) * 20,
+        })
+
+        return orgs
+    }
+    async findById(id: string){
         const org = await prisma.org.findUnique({
             where: { id }
         })

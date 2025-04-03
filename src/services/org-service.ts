@@ -1,5 +1,5 @@
 import { OrgsRepository } from "@/repositories/orgsRepository";
-import { Estados, Org } from "@prisma/client";
+import { Estados, MyOrgCreateInput } from "@prisma/client";
 import { hash } from "bcryptjs";
 import { OrgAlreadyExistsError } from "./errors/org-already-existis-error";
 import { EnderecoRepository } from "@/repositories/enderecoRepository";
@@ -23,7 +23,11 @@ interface EnderecoRequest{
 }
 
 interface RegisterServiceResponse{
-    org: Org
+    org: MyOrgCreateInput
+}
+
+interface OrgsByCidadeResponse {
+    orgs: MyOrgCreateInput[]
 }
 
 export class RegisterService{
@@ -55,6 +59,13 @@ export class RegisterService{
         const org = await this.orgsRepository.create({nome, email, endereco, whatsapp, password_hash})
 
         return {org}
+    }
+
+    async findAllOrgsByCidade(cidade: string, page: number): Promise<OrgsByCidadeResponse>{
+
+        const orgs = await this.orgsRepository.findAllOrgsByCidade(cidade, page)
+
+        return {orgs}
     }
 
 }

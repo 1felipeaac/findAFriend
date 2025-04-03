@@ -44,6 +44,17 @@ enum Ambiente {
 enum Role {
   ADMIN
   ORG
+  CONSUMER
+}
+
+model User {
+  id            String @id @default(uuid())
+  nome          String
+  email         String @unique
+  password_hash String
+  role          Role   @default(CONSUMER)
+
+  @@map("users")
 }
 
 model Org {

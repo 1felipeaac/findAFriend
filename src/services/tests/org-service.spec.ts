@@ -1,9 +1,9 @@
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-reposirory'
 import { describe, beforeEach, it, expect } from 'vitest'
-import { RegisterService } from '../register'
+import { RegisterService } from '../org-service'
 import { compare } from 'bcryptjs'
 import { OrgAlreadyExistsError } from '../errors/org-already-existis-error'
-import { InMemoryEnderecosRepository } from '@/repositories/in-memory/in-memory-enderecos.repository'
+import { InMemoryEnderecosRepository } from '@/repositories/in-memory/in-memory-enderecos-repository'
 
 let orgRepository: InMemoryOrgsRepository
 let enderRepository: InMemoryEnderecosRepository
@@ -125,6 +125,48 @@ describe('RegisterService', () => {
                 password:"123456"
             })
         ).rejects.toBeInstanceOf(OrgAlreadyExistsError)
+    })
+
+    it('Deve ser possível listar todas as Organizações por cidade', async ()=>{
+       for(let i = 0; i < 4; i++){
+           await sut.execute({
+               nome:`org${i} ltda.`,
+               email: `org${i}@email.com`,
+               endereco:{
+                   cep:"65632-120",
+                   logradouro:`Rua ${i}`,
+                   numero:`000${i}`,
+                   bairro:"Bairro",
+                   cidade:"Timon",
+                   estado:"MA"
+               },
+               whatsapp:`0000000000${i}`,
+               password:"123456"
+           })
+       }
+
+       await sut.execute({
+        nome:"org ltda.",
+        email:"org@email.com",
+        endereco:{
+            cep:"65632-120",
+            logradouro:"Rua 9",
+            numero:"0009",
+            bairro:"Bairro",
+            cidade:"Teresina",
+            estado:"PI"
+        },
+        whatsapp:"00000000009",
+        password:"123456"
+    })
+
+    const {orgs} = await sut.findAllOrgsByCidade('Timon', 1)
+
+    expect(orgs).toHaveLength(4)
+    expect(orgs).toEqual(expect.arrayContaining([
+        expect.objectContaining({ nome: "org2 ltda." }),
+        expect.objectContaining({ nome: "org3 ltda." }),
+    ]))
     })
 
 })

@@ -3,8 +3,7 @@ import { InMemoryPetsRepository } from "@/repositories/in-memory/in-memory-pets-
 import { PetService } from "../pet-service"
 import { beforeEach, describe, it, expect } from "vitest"
 import { Org } from "@prisma/client"
-import { RegisterService } from "../register"
-import { InMemoryEnderecosRepository } from "@/repositories/in-memory/in-memory-enderecos.repository"
+
 
 let orgRepository: InMemoryOrgsRepository
 let petRepository: InMemoryPetsRepository
@@ -26,10 +25,10 @@ describe('CreatePetService', () => {
             nome: "org ltda.",
             email: "org@email.com",
             endereco: {
-                cep: "65632-120",
-                logradouro: "Rua D",
-                numero: "3216",
-                bairro: "Vila do Bec",
+                cep: "00000-000",
+                logradouro: "Rua 1",
+                numero: "0000",
+                bairro: "Bairro",
                 cidade: "Timon",
                 estado: "MA"
             },
