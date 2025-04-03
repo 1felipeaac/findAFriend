@@ -2,69 +2,82 @@ import { Prisma, $Enums, Pet } from "@prisma/client";
 import { FindByIdade, PetsRepository } from "../petsRepository";
 import { randomUUID } from "node:crypto";
 
+export class InMemoryPetsRepository implements PetsRepository {
+  public items: Pet[] = [];
+  //@ts-ignore
+  async create(data: Prisma.PetUncheckedCreateInput) {
+    const requisitos = Array.isArray(data.requisitos)
+      ? data.requisitos
+      : data.requisitos?.set || [];
+    const pet = {
+      id: randomUUID(),
+      nome: data.nome,
+      sobre: data.sobre,
+      idade: data.idade,
+      porte: data.porte,
+      energia: data.energia,
+      independencia: data.independencia,
+      ambiente: data.ambiente,
+      fotos: data.fotos,
+      especie: data.especie,
+      requisitos,
+      org_id: data.org_id,
+    };
 
-
-export class InMemoryPetsRepository implements PetsRepository{
-    public items:Pet[] = []
     //@ts-ignore
-    async create(data: Prisma.PetUncheckedCreateInput){
-        const requisitos = Array.isArray(data.requisitos) ? data.requisitos : data.requisitos?.set || [];
-        const pet = {
-            id: randomUUID(),
-            nome: data.nome,
-            sobre: data.sobre,
-            idade: data.idade,
-            porte: data.porte, 
-            energia: data.energia,
-            independencia: data.independencia,
-            ambiente: data.ambiente, 
-            fotos: data.fotos, 
-            especie: data.especie, 
-            requisitos,
-            org_id: data.org_id,
-        }
+    this.items.push(pet);
 
-        //@ts-ignore
-        this.items.push(pet)
+    return pet;
+  }
+  async findById(id: string) {
+    const pet = this.items.find((p) => p.id === id);
 
-        return pet
-    }
-    async findById(id: string) {
-        const pet = this.items.find(p => p.id === id)
-
-        if (!pet) {
-            return null
-        }
-
-        return pet
-    }
-    async findAll(page: number){
-        const pageSize = 20
-        return this.items
-                .slice((page - 1) * pageSize, page * pageSize)
-    }
-    async findAllByIdade(idade: string, page: number){
-        const pageSize = 20
-        // console.log(this.items.filter((pet) => pet.idade === idade))
-        return this.items
-                .filter((pet) => pet.idade === idade)  // Filtrando pets pela idade
-                .slice((page - 1) * pageSize, page * pageSize);  // Paginação
-    }
-    async findAllByEnergia(energia: string, page: number){
-        return this.items.filter((pet) => pet.energia.includes(energia))
-            .slice((page - 1) * 20, page *20)
-    }
-    async findAllByPorte(porte: string, page: number){
-        return this.items.filter((pet) => pet.porte.includes(porte))
-            .slice((page - 1) * 20, page *20)
-    }
-    async findAllByIndependencia(independencia: string, page: number): Promise<Pet[]> {
-        return this.items.filter((pet) => pet.independencia.includes(independencia))
-            .slice((page - 1) * 20, page *20)
+    if (!pet) {
+      return null;
     }
 
-    async findAllByAmbiente(ambiente: string, page: number): Promise<Pet[]> {
-        return this.items.filter((pet) => pet.ambiente.includes(ambiente))
-        .slice((page - 1) * 20, page *20)    }
+    return pet;
+  }
+  async findAll(page: number) {
+    const pageSize = 20;
+    return this.items.slice((page - 1) * pageSize, page * pageSize);
+  }
+  async findAllByIdade(idade: string, page: number) {
+    const pageSize = 20;
 
+    const filteredPets = this.items.filter((pet) => pet.idade === idade);
+
+    if ((page - 1) * pageSize >= filteredPets.length) {
+      return []; // Retorna vazio se a página estiver fora do intervalo
+    }
+
+    return filteredPets.slice((page - 1) * pageSize, page * pageSize);
+  }
+  async findAllByEnergia(energia: string, page: number) {
+    return this.items
+      .filter((pet) => pet.energia.includes(energia))
+      .slice((page - 1) * 20, page * 20);
+  }
+  async findAllByPorte(porte: string, page: number) {
+    return this.items
+      .filter((pet) => pet.porte.includes(porte))
+      .slice((page - 1) * 20, page * 20);
+  }
+  async findAllByIndependencia(
+    independencia: string,
+    page: number
+  ){
+    return this.items
+      .filter((pet) => pet.independencia.includes(independencia))
+      .slice((page - 1) * 20, page * 20);
+  }
+  async findAllByAmbiente(ambiente: string, page: number): Promise<Pet[]> {
+    return this.items
+      .filter((pet) => pet.ambiente.includes(ambiente))
+      .slice((page - 1) * 20, page * 20);
+  }
+
+  async findAllByCidade(cidade: string, page: number): Promise<Pet[]> {
+      throw new Error ("não implementado")
+  }
 }

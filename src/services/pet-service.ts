@@ -78,13 +78,62 @@ export class PetService {
 
     async findAllByIdade(idade: string, page: number): Promise<PetServiceListReponse>{
 
-        console.log("findAllByIdade" +"|"+ idade)
-
         if(!Object.values($Enums.Idade).includes(idade as $Enums.Idade)){
             throw new ValidacaoEnumError(idade)
         }
 
         const pets = await this.petRepository.findAllByIdade(idade, page);
+
+        return {pets}
+    }
+
+    async findAllByEnergia(energia: string, page: number): Promise<PetServiceListReponse>{
+
+        if(!Object.values($Enums.Energia).includes(energia as $Enums.Energia)){
+            throw new ValidacaoEnumError(energia)
+        }
+
+        const pets = await this.petRepository.findAllByEnergia(energia, page);
+
+        return {pets}
+    }
+
+    async findAllByIndependencia(independencia: string, page: number): Promise<PetServiceListReponse>{
+
+        if(!Object.values($Enums.Independencia).includes(independencia as $Enums.Independencia)){
+            throw new ValidacaoEnumError(independencia)
+        }
+
+        const pets = await this.petRepository.findAllByIndependencia(independencia, page);
+
+        return {pets}
+    }
+
+    async findAllByPorte(porte: string, page: number): Promise<PetServiceListReponse>{
+
+        if(!Object.values($Enums.Porte).includes(porte as $Enums.Porte)){
+            throw new ValidacaoEnumError(porte)
+        }
+
+        const pets = await this.petRepository.findAllByPorte(porte, page);
+
+        return {pets}
+    }
+
+    async findAllByAmbiente(ambiente: string, page: number): Promise<PetServiceListReponse>{
+
+        if(!Object.values($Enums.Ambiente).includes(ambiente as $Enums.Ambiente)){
+            throw new ValidacaoEnumError(ambiente)
+        }
+
+        const pets = await this.petRepository.findAllByAmbiente(ambiente, page);
+
+        return {pets}
+    }
+
+    async findAllByCidade(cidade: string, page: number): Promise<PetServiceListReponse>{
+
+        const pets = await this.petRepository.findAllByCidade(cidade, page);
 
         return {pets}
     }

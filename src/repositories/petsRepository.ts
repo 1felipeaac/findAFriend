@@ -13,6 +13,6 @@ export interface PetsRepository {
     findAllByEnergia(energia: string, page: number): Promise<Pet[]>
     findAllByPorte(porte: string, page: number): Promise<Pet[]>
     findAllByIndependencia(independencia: string, page: number): Promise<Pet[]>
-    // findAllByCidade(cidade: string, page: number): Promise<Pet[]>
+    findAllByCidade(cidade: string, page: number): Promise<Pet[]>
     findAllByAmbiente(ambiente: string, page: number): Promise<Pet[]>
 }

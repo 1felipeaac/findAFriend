@@ -33,7 +33,7 @@ export async function createPet(request: FastifyRequest, reply: FastifyReply){
             org_id} = petBodySchema.parse(request.body)
             
         const petService = makeCreatePetRegisterService()
-        const pet = petService.execute(
+        const pet = await petService.execute(
             {
                 nome,
                 sobre,
@@ -57,6 +57,25 @@ export async function createPet(request: FastifyRequest, reply: FastifyReply){
             })
         }
 
+        return reply.status(400).send({message: error})
+    }
+}
+
+export async function findPetByCidade(request: FastifyRequest, reply: FastifyReply){
+
+    const cidadeQuerySchema = z.object({
+        cidade: z.string()
+    })
+
+    try {
+        const {cidade} = cidadeQuerySchema.parse(request.query)
+
+        const petService = makeCreatePetRegisterService()
+
+        const {pets} = await petService.findAllByCidade(cidade, 1)
+
+        return reply.status(200).send({pets})
+    } catch (error) {
         return reply.status(400).send({message: error})
     }
 }
